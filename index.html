@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; media-src blob:; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>TalkBatch - offline grouped video exports</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="planner.js" defer></script>
+</head>
+<body>
+  <header>
+    <span class="badge">LOCAL FIRST / v0.1 preview</span>
+    <h1>One recording.<br>Several finished videos.</h1>
+    <p class="lead">Arrange single- or multi-segment outputs. Preview the numbered queue.
+      Download one plan and export it locally with Python + FFmpeg.</p>
+    <p class="notice">Re-encoded WebM, not lossless cutting. Standalone, not a LosslessCut plugin.
+      AI-authored preview: review every output before publishing.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="source-title">
+      <h2 id="source-title">1. Open your recording</h2>
+      <p>No upload, account or background server. This page uses a browser-local file URL;
+        it does not send your video or plan to a service.</p>
+      <div class="toolbar">
+        <label class="file-button">Choose video
+          <input id="source-file" type="file" accept=".mp4,.mov,.mkv,.webm">
+        </label>
+        <label class="file-button secondary">Load a saved plan
+          <input id="plan-file" type="file" accept=".json,application/json">
+        </label>
+      </div>
+      <p id="source-status" role="status">Choose an MP4, MOV, MKV or WebM, or load a plan.</p>
+      <video id="preview" controls preload="metadata" playsinline></video>
+      <p class="small">Preview depends on your browser's codecs. If unavailable, type ranges manually;
+        the exporter probes the actual file. Times are relative to the recording, not wall-clock time.</p>
+    </section>
+
+    <section aria-labelledby="groups-title">
+      <h2 id="groups-title">2. Build the output queue</h2>
+      <p>Each card becomes one video. Ranges join in the order shown; overlaps/repeats are intentional
+        if you enter them. Reorder cards to control numbered filenames.</p>
+      <p class="small">Times: seconds, MM:SS or HH:MM:SS, with optional decimal seconds.
+        Up to 30 outputs, 10 ranges per output, 120 ranges total. Minimum range: 0.1 seconds.</p>
+      <div id="groups"></div>
+      <button id="add-group" type="button">+ Add output</button>
+    </section>
+
+    <section aria-labelledby="export-title">
+      <h2 id="export-title">3. Export locally</h2>
+      <p id="plan-status" role="status" aria-live="polite"></p>
+      <ol id="queue"></ol>
+      <button id="download" type="button" disabled>Download validated plan</button>
+      <p>Keep <code>talkbatch.py</code> from the source/package. With Python 3.10+ and FFmpeg 6+
+        installed, run the following with your own paths in place of the uppercase placeholders:</p>
+      <pre>python3 talkbatch.py --check
+python3 talkbatch.py --source SOURCE --plan PLAN --dry-run
+python3 talkbatch.py --source SOURCE --plan PLAN --output NEW_DIRECTORY</pre>
+      <p class="small">On Windows, use <code>python</code> if that is your Python command.
+        Quote paths for your shell. The output directory must not exist.
+        The exporter uses argument lists, never shell commands from this plan.</p>
+      <p>The queue runs sequentially. A failed export stops it and writes a failure report;
+        completed outputs stay intact. The default per-output timeout is one hour.
+        Encoding can be slow: test a short sample before a long recording.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Privacy &amp; limits.</strong> Files and plans remain in this page's memory until replaced
+      or closed; downloads are written only when requested. Browser extensions, OS swap and download
+      history are outside this app's control. Use media you trust and have rights to process.</p>
+    <p>Only the first video/audio streams are exported. Extra tracks, chapters, subtitles and metadata
+      are not preserved; odd dimensions may gain a one-pixel border. Export timing is frame-boundary
+      limited. No quality, timing, rights-clearance or production-reliability guarantee.</p>
+    <p>Made by an AI-operated project under a human principal. Free MIT source.
+      <a href="https://github.com/astraentrepreneur-glitch/talkbatch" target="_blank" rel="noopener noreferrer">Source &amp; documentation</a>
+      &middot; <a href="https://github.com/astraentrepreneur-glitch/talkbatch/issues" target="_blank" rel="noopener noreferrer">Feedback (synthetic examples only)</a>.
+      External links leave this page; no video is attached to them.</p>
+  </footer>
+</body>
+</html>
+

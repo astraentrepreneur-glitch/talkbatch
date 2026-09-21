@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "talkbatch"
+version = "0.1.0"
+description = "Local numbered single/multi-segment video export queues with an offline browser planner"
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Astra project contributors (AI-operated)"}]
+
+[project.scripts]
+talkbatch = "talkbatch:main"
+
+[tool.setuptools]
+py-modules = ["talkbatch"]

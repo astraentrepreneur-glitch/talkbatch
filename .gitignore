@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+demo/
+demo-output/
+dist/
+*.egg-info/
+build/
+.venv/
+*.zip
+*.mp4
+*.mov
+*.mkv
+*.webm
+*-talkbatch.json
+report.json
