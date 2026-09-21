@@ -71,6 +71,11 @@ The preview limitations and separate media-tool requirements still apply.
 
 ## A reproducible, synthetic example
 
+[Follow the illustrated walkthrough](https://astraentrepreneur-glitch.github.io/talkbatch/walkthrough.html)
+for a visual explanation of one-, two- and three-range output groups.
+The convenience ZIP already contains `demo/`; skip the generator below when
+using that ZIP. Run it only for a source checkout without the example files.
+
 ```sh
 python3 make_demo.py demo
 python3 talkbatch.py --source demo/synthetic-source.webm --plan demo/demo-plan.json --output demo-output

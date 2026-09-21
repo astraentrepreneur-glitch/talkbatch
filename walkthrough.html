@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>TalkBatch: one recording, three grouped exports</title>
+  <meta name="description" content="A reproducible synthetic walkthrough of local single- and multi-range video exports. Free, AI-authored preview; Python and FFmpeg required.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="badge">TALKBATCH / SYNTHETIC WALKTHROUGH</div>
+    <h1>One recording.<br>Three numbered outputs.</h1>
+    <p class="lead">Give each output a title, collect its ranges, arrange the queue,
+      then run one export command. Your recording stays local.</p>
+    <p class="notice">AI-authored preview. Python and FFmpeg required.
+      Re-encoded WebM, not lossless cutting or a LosslessCut plugin.</p>
+    <p><a href="index.html">Open the planner</a> &middot;
+      <a href="https://github.com/astraentrepreneur-glitch/talkbatch/releases/tag/v0.1.0-preview">Free files and synthetic example</a></p>
+  </header>
+  <main>
+    <section id="example" aria-labelledby="example-heading">
+      <div class="badge">TALKBATCH / ILLUSTRATED PLAN</div>
+      <h2 id="example-heading">12 seconds of synthetic source -> 3 files</h2>
+      <p>Each row selects ranges from the same source timeline. This is a
+        diagram, not a waveform or customer recording.</p>
+      <svg viewBox="0 0 720 190" width="100%" role="img" aria-labelledby="timeline-title timeline-description">
+        <title id="timeline-title">Three groups of ranges in a twelve-second source</title>
+        <desc id="timeline-description">Row one selects seconds one to two.
+          Row two joins three to four with six to seven.
+          Row three joins zero to half a second, four point seven to five point seven,
+          and nine to ten. Each row becomes one output file.</desc>
+        <g stroke="#405269">
+          <path d="M40 35H700 M40 80H700 M40 125H700 M40 170H700"/>
+          <path d="M40 35V175 M205 35V175 M370 35V175 M535 35V175 M700 35V175"/>
+        </g>
+        <g fill="#e6edf6" font-family="system-ui, sans-serif" font-size="17">
+          <text x="40" y="24" text-anchor="middle">0s</text>
+          <text x="205" y="24" text-anchor="middle">3s</text>
+          <text x="370" y="24" text-anchor="middle">6s</text>
+          <text x="535" y="24" text-anchor="middle">9s</text>
+          <text x="700" y="24" text-anchor="middle">12s</text>
+          <text x="8" y="67">1</text>
+          <text x="8" y="112">2</text>
+          <text x="8" y="157">3</text>
+        </g>
+        <g data-group="0" fill="#7be2c2">
+          <rect data-start="1" data-end="2" x="95" y="47" width="55" height="25" rx="4"/>
+        </g>
+        <g data-group="1" fill="#ffbf69">
+          <rect data-start="3" data-end="4" x="205" y="92" width="55" height="25" rx="4"/>
+          <rect data-start="6" data-end="7" x="370" y="92" width="55" height="25" rx="4"/>
+        </g>
+        <g data-group="2" fill="#91c9ff">
+          <rect data-start="0" data-end="0.5" x="40" y="137" width="27.5" height="25" rx="4"/>
+          <rect data-start="4.7" data-end="5.7" x="298.5" y="137" width="55" height="25" rx="4"/>
+          <rect data-start="9" data-end="10" x="535" y="137" width="55" height="25" rx="4"/>
+        </g>
+      </svg>
+      <div class="group" data-output="001-single-range.webm" data-duration="1">
+        <h3>1. One range -> one file</h3>
+        <p>1-2s = <strong>1s planned</strong><br><code class="filename">001-single-range.webm</code></p>
+      </div>
+      <div class="group" data-output="002-two-ranges.webm" data-duration="2">
+        <h3>2. Two ranges -> one file</h3>
+        <p>3-4s + 6-7s = <strong>2s planned</strong><br><code class="filename">002-two-ranges.webm</code></p>
+      </div>
+      <div class="group" data-output="003-three-ranges-off-keyframe.webm" data-duration="2.5">
+        <h3>3. Three ranges -> one file</h3>
+        <p>0-0.5s + 4.7-5.7s + 9-10s = <strong>2.5s planned</strong><br><code class="filename">003-three-ranges-off-keyframe.webm</code></p>
+      </div>
+      <p class="small">AI-authored preview. Local Python + FFmpeg. Re-encoded WebM;
+        no speed, lossless-quality or real-customer claim. Container duration can
+        differ slightly from planned duration.</p>
+    </section>
+
+    <section aria-labelledby="try-heading">
+      <h2 id="try-heading">Reproduce the example</h2>
+      <ol>
+        <li>Download the free <code>talkbatch-0.1.0-convenience.zip</code> from
+          the release link above and extract it. The ZIP already includes
+          <code>demo/</code>. No payment, account or private footage is needed.</li>
+        <li>Open <a href="index.html">the planner</a> or the extracted
+          <code>index.html</code>. Choose <code>demo/synthetic-source.webm</code>,
+          then load <code>demo/demo-plan.json</code>. Review the three output
+          cards. Reordering cards changes their filename numbers.</li>
+        <li>For the unchanged example, open a terminal in the extracted
+          <code>talkbatch-0.1.0</code> folder and run:</li>
+      </ol>
+      <pre><code>python3 talkbatch.py --check
+python3 talkbatch.py --source demo/synthetic-source.webm --plan demo/demo-plan.json --output example-outputs</code></pre>
+      <p>Use <code>python</code> instead of <code>python3</code> if that is your
+        Windows Python command. Requires Python 3.10+, FFmpeg 6+ with
+        <code>libvpx-vp9</code>/<code>libopus</code>, and ffprobe on PATH.
+        These tools are not bundled.</p>
+      <p>The output directory must be new. If <code>example-outputs</code> already
+        exists, choose another name; do not overwrite previous results.
+        Open all three videos and inspect <code>report.json</code>.
+        The queue runs sequentially, not in parallel.</p>
+      <p>If you change the plan, download the new JSON from the planner and pass
+        its path with <code>--plan</code>. Browser editing alone does not change
+        the original example file, and the browser does not export videos.</p>
+      <p class="small">Using source rather than the ZIP? Generate the missing
+        example once with <code>python3 make_demo.py demo</code>.
+        Skip that command when the supplied <code>demo/</code> already exists.
+        The PyPI wheel contains the exporter only, not these example/planner files.</p>
+    </section>
+
+    <section aria-labelledby="limits-heading">
+      <h2 id="limits-heading">What this does and does not show</h2>
+      <p>The fixture uses frame-coded black/white stripes and a synthetic tone:
+        160 by 96 pixels, 10 frames per second. Its expected frame sequences
+        are 10-19; 30-39 then 60-69; and 0-4 then 47-56 then 90-99.</p>
+      <p>This small example demonstrates range grouping and output ordering.
+        It does not establish production suitability for long recordings,
+        variable frame rates or every codec, nor perfect speech synchronization.
+        Re-encoding changes quality; review a small real sample first.</p>
+      <p>Only the first video and audio streams are used. Subtitles, extra audio
+        tracks, chapters and source metadata are not preserved.
+        Files are WebM (VP9/Opus), not MP4.</p>
+      <p class="notice">No upload is needed. Do not post private recordings,
+        personal paths or payment details in public issues.</p>
+      <p><a href="https://github.com/astraentrepreneur-glitch/talkbatch#export-behavior-and-failure-handling">Full limits and failure behavior</a>
+        &middot; <a href="https://github.com/astraentrepreneur-glitch/talkbatch/issues">Report a reproducible issue without private files</a></p>
+    </section>
+  </main>
+  <footer>
+    MIT source and the identical convenience package are free. Any optional
+    support purchase adds no exclusive features or ongoing support entitlement.
+    This walkthrough is not customer work or evidence of paid demand.
+  </footer>
+</body>
+</html>
