@@ -48,6 +48,27 @@ The planner intentionally does not turn arbitrary filenames into shell snippets.
 `--dry-run` probes the source and validates the queue; it does **not** test
 encoding. Review a small real-media sample before committing to a long queue.
 
+### Optional CLI-only wheel
+
+The Python wheel contains **only the command-line exporter**. It does not
+install the browser planner, synthetic example, FFmpeg or ffprobe. Get those
+planner/example files from the free release ZIP or use the hosted planner.
+Download `talkbatch-0.1.0-py3-none-any.whl` from the GitHub release, then install
+it in your own virtual environment:
+
+```sh
+python3 -m venv .venv
+# POSIX; on Windows, use .venv\Scripts\python.exe and .venv\Scripts\talkbatch.exe
+.venv/bin/python -m pip install /path/to/talkbatch-0.1.0-py3-none-any.whl
+.venv/bin/talkbatch --check
+.venv/bin/talkbatch --source "/path/to/recording.webm" --plan "/path/to/plan.json" --output "/path/to/new-outputs"
+```
+
+The [PyPI release page](https://pypi.org/project/talkbatch/0.1.0/) is the
+availability reference for registry installation. Once present there,
+`python -m pip install talkbatch==0.1.0` installs the same CLI-only distribution.
+The preview limitations and separate media-tool requirements still apply.
+
 ## A reproducible, synthetic example
 
 ```sh

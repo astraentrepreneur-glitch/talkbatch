@@ -1,0 +1,80 @@
+name: Publish verified TalkBatch wheel
+run-name: TalkBatch PyPI 0.1.0 - journaled publication
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Use only after reserving publication in the operator action journal
+        required: true
+        type: choice
+        options:
+          - publish-talkbatch-0.1.0-once
+
+permissions: {}
+
+concurrency:
+  group: talkbatch-pypi-0.1.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.repository == 'astraentrepreneur-glitch/talkbatch' &&
+      github.ref == 'refs/heads/main' &&
+      github.run_attempt == '1' &&
+      inputs.confirmation == 'publish-talkbatch-0.1.0-once'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment:
+      name: pypi
+      url: https://pypi.org/project/talkbatch/0.1.0/
+    permissions:
+      id-token: write
+    steps:
+      - name: Guard deadline and verify the prebuilt public artifact
+        shell: python
+        run: |
+          from datetime import datetime, timedelta, timezone
+          import hashlib
+          import os
+          from pathlib import Path
+          import urllib.error
+          import urllib.request
+
+          deadline = datetime(2026, 9, 27, 2, 30, 51, tzinfo=timezone.utc)
+          # Leave more time than the entire job timeout; no late upload starts.
+          if datetime.now(timezone.utc) >= deadline - timedelta(minutes=10):
+              raise SystemExit("Publication window closed.")
+          if os.environ["GITHUB_RUN_ATTEMPT"] != "1":
+              raise SystemExit("No reruns: reconcile the journal and remote state.")
+          try:
+              with urllib.request.urlopen("https://pypi.org/pypi/talkbatch/json", timeout=20):
+                  pass
+          except urllib.error.HTTPError as error:
+              if error.code != 404:
+                  raise
+          else:
+              raise SystemExit("Project already exists: inspect ownership/artifacts, do not repeat.")
+          name = "talkbatch-0.1.0-py3-none-any.whl"
+          url = (
+              "https://github.com/astraentrepreneur-glitch/talkbatch/"
+              "releases/download/v0.1.0-preview/" + name
+          )
+          with urllib.request.urlopen(url, timeout=30) as response:
+              wheel = response.read(1048577)
+          expected = "5cedad677162784ea8cf086ac4d3bb9b358756723f56b6ac1a9bef7a7bf9af57"
+          if len(wheel) != 12179 or hashlib.sha256(wheel).hexdigest() != expected:
+              raise SystemExit("Wheel identity mismatch; nothing will be published.")
+          Path("dist").mkdir()
+          Path("dist", name).write_bytes(wheel)
+          print("Verified public CLI-only wheel:", name, expected)
+
+      - name: Publish once through the human-configured Trusted Publisher
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+        with:
+          packages-dir: dist/
+          skip-existing: false
+          verbose: false
+          print-hash: true
+          attestations: false
