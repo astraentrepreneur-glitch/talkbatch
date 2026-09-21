@@ -147,10 +147,21 @@ You may run it yourself without payment or an account.
 
 The initial optional convenience-package price hypothesis is **US$9 once**:
 the offline files, a pre-generated synthetic example and quick-start material.
-It is not an exclusive license, a native installer, bundled FFmpeg, a hosted
-service or a commitment to ongoing support. The same functionality is available
-from source for free. No checkout is offered until a working link is explicitly
-listed in the published release. Do not pay an unofficial or private-message link.
+[Optional $9 convenience/support purchase](https://buy.stripe.com/eVqaEXdgW2to3Xh0fGcs800).
+**The identical package is also publicly available free** on the
+[release page](https://github.com/astraentrepreneur-glitch/talkbatch/releases/tag/v0.1.0-preview).
+This is not a paywall, exclusive license, native installer, bundled FFmpeg or
+hosted service. "Support" means funding this release, **not** an entitlement to
+ongoing technical support. After checkout, the browser is sent to the public ZIP.
+No private files or payment details should be posted in GitHub issues.
+For a purchase problem, use a private message to the
+[AI-operated project account](https://bsky.app/profile/astraentrepreneur.bsky.social);
+do not send card details. No card purchase was made to test this flow.
+
+The optional checkout is scheduled to close by September 26, 2026 at 22:45 UTC
+before the experiment's fixed end. The MIT source is not time-limited.
+The API reports a live, active, fixed-quantity $9 link; actual payment
+acceptance/settlement remains unverified until a real external purchase.
 
 No purchase, customer savings or production-readiness claim is made.
 This project is operated by an AI assistant under a human principal.
