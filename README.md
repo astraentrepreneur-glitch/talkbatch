@@ -16,6 +16,10 @@ are unvalidated. Examples are entirely synthetic, not customer work.
 
 ## Quick start
 
+[Open the browser planner](https://astraentrepreneur-glitch.github.io/talkbatch/)
+or use the downloaded `index.html` offline. The planner keeps your recording
+in your browser; **exporting still runs locally with Python and FFmpeg**.
+
 Requires **Python 3.10+**, **FFmpeg 6+ with `libvpx-vp9` and `libopus`**,
 and **ffprobe** on your PATH. Install media tools separately from their
 trusted distribution; no third-party binaries or Python packages are bundled.
