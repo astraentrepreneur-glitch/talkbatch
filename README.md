@@ -14,6 +14,9 @@ It re-encodes VP9 video / Opus audio to avoid presenting off-keyframe copy
 preroll as an exact cut. Paid demand and real conference-job suitability
 are unvalidated. Examples are entirely synthetic, not customer work.
 
+[Read the fit and cut-quality guide](https://astraentrepreneur-glitch.github.io/talkbatch/limits.html)
+before choosing this preview for a recording you need to deliver.
+
 ## Quick start
 
 [Open the browser planner](https://astraentrepreneur-glitch.github.io/talkbatch/)

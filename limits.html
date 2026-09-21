@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>TalkBatch: cut boundaries, quality and when not to use it</title>
+  <meta name="description" content="TalkBatch re-encodes WebM rather than promising lossless cuts. Check its output, track and setup limitations before choosing this AI-authored preview.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="badge">TALKBATCH / FIT AND LIMITS</div>
+    <h1>A precise range is not<br>unchanged compressed bytes.</h1>
+    <p class="lead">TalkBatch groups ranges into numbered files by decoding,
+      trimming and re-encoding. That is a tradeoff, not a quality upgrade.</p>
+    <p class="notice">AI-authored preview. Local Python + FFmpeg required.
+      Not lossless stream-copy, not a LosslessCut plugin, not a production guarantee.</p>
+    <p><a href="walkthrough.html">See the synthetic walkthrough</a> &middot;
+      <a href="index.html">Open the planner</a></p>
+  </header>
+  <main>
+    <section aria-labelledby="fit-heading">
+      <h2 id="fit-heading">Choose another workflow if you require...</h2>
+      <div class="group">
+        <h3>Original compressed quality or codec preservation</h3>
+        <p>This preview re-encodes video to VP9 and audio to Opus.
+          It does not preserve the source bitstream. Quality and file size can
+          change; successful export is not proof that the result looks or sounds acceptable.</p>
+      </div>
+      <div class="group">
+        <h3>MP4 delivery</h3>
+        <p>Outputs are WebM, not MP4. Do not treat the ability to read an MP4
+          as a promise to preserve its container or codecs.</p>
+      </div>
+      <div class="group">
+        <h3>Multiple audio tracks, subtitles, chapters or source metadata</h3>
+        <p>The exporter uses the first video and first audio streams.
+          Extra tracks, subtitles, chapters and source metadata are dropped.
+          A source whose first video stream is attached cover art is rejected.</p>
+      </div>
+      <div class="group">
+        <h3>A browser-only export or a native editor integration</h3>
+        <p>The browser previews a local file and downloads a JSON plan.
+          Exporting still requires local Python, FFmpeg and ffprobe.
+          The PyPI wheel contains only the exporter; no browser planner or media tools.</p>
+      </div>
+      <div class="group">
+        <h3>A long-recording speed or synchronization guarantee</h3>
+        <p>The queue is sequential and may decode substantial input again for
+          each output. The small synthetic example establishes neither production
+          throughput nor perfect speech synchronization on your recording.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="cuts-heading">
+      <h2 id="cuts-heading">Why not promise both exact cuts and stream-copy?</h2>
+      <p>Inter-frame codecs can make a requested boundary depend on earlier
+        encoded frames. Copying compressed packets and selecting only the
+        intended decoded frames are different operations.</p>
+      <p>An archived pre-product synthetic experiment informed this choice:
+        a particular FFmpeg seek/copy, timestamp-normalization and concat method
+        retained unwanted leading frames at off-keyframe boundaries.
+        <strong>That was not a test of LosslessCut or a claim that every
+        stream-copy or smart-cut workflow behaves that way.</strong>
+        The closed experiment is not a new product benchmark.</p>
+      <p>TalkBatch instead trims decoded video/audio, resets timestamps, joins
+        the selected ranges and re-encodes them. Cuts are still constrained by
+        actual frame boundaries. This does not promise sub-frame precision,
+        variable-frame-rate equivalence or unchanged image/audio quality.</p>
+    </section>
+
+    <section aria-labelledby="evidence-heading">
+      <h2 id="evidence-heading">What the current example actually establishes</h2>
+      <p>The <a href="walkthrough.html">reproducible example</a> uses a
+        twelve-second synthetic source with frame-coded stripes and a tone,
+        not customer footage. Its one-, two- and three-range outputs have
+        expected frame sequences that can be decoded and compared.</p>
+      <p>The <a href="https://github.com/astraentrepreneur-glitch/talkbatch/blob/main/test_talkbatch.py">current source tests</a>
+        also cover a silent/reordered case and a small MPEG-4 Part 2/AAC MP4
+        input. They do not establish every codec, platform, long recording
+        or real conference job. Audio-stream presence is not a listening or lip-sync test.</p>
+      <p>The exporter's codec/stream/duration checks are sanity checks.
+        A completed <code>report.json</code> is not proof of correct speech,
+        acceptable quality or customer acceptance.</p>
+    </section>
+
+    <section aria-labelledby="sample-heading">
+      <h2 id="sample-heading">A safer first use</h2>
+      <ol>
+        <li>Decide whether WebM output and the track/quality tradeoffs fit the job.
+          If not, choose an export path that supports your actual requirements.</li>
+        <li>Try one short range and one joined group from your own non-sensitive
+          sample. Use a new output directory; previous outputs are not overwritten.</li>
+        <li>Watch and listen to the results, especially around joins.
+          Compare against the source before committing a long queue.</li>
+        <li>If reporting a problem, give versions, intended ranges and a small
+          reproducible synthetic example where possible. Do not upload private
+          recordings, personal paths, payment details or an unreviewed report.</li>
+      </ol>
+      <p><code>--dry-run</code> validates the plan and probes the source; it does
+        not encode anything or replace reviewing an actual sample export.</p>
+      <p><a href="https://github.com/astraentrepreneur-glitch/talkbatch/releases/tag/v0.1.0-preview">Free package</a>
+        &middot; <a href="https://github.com/astraentrepreneur-glitch/talkbatch#export-behavior-and-failure-handling">Full behavior and failure handling</a></p>
+    </section>
+  </main>
+  <footer>
+    MIT source and the identical convenience package are free.
+    An optional support purchase unlocks no features or ongoing support entitlement.
+    No customer-adoption, paid-demand or universal-accuracy claim is made here.
+  </footer>
+</body>
+</html>
