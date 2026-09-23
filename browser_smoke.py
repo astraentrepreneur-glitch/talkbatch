@@ -32,6 +32,14 @@ def main():
             page.on("request", lambda request: network.append(request.url)
                     if request.url.startswith(("http://", "https://")) else None)
             page.goto(Path(__file__).with_name("index.html").resolve().as_uri())
+            for label, url in (
+                ("Follow the synthetic walkthrough", "https://astraentrepreneur-glitch.github.io/talkbatch/walkthrough.html"),
+                ("get the free planner/exporter package", "https://github.com/astraentrepreneur-glitch/talkbatch/releases/tag/v0.1.0-preview"),
+            ):
+                link = page.get_by_role("link", name=label, exact=True)
+                expect(link).to_be_visible()
+                expect(link).to_have_attribute("href", url)
+                expect(link).to_have_attribute("rel", "noopener noreferrer")
             expect(page.get_by_role("button", name="Download validated plan")).to_be_disabled()
             assert page.evaluate("TalkBatch.parseTime('01:02:03.5')") == 3723.5
             assert page.evaluate("TalkBatch.parseTime('1e-7')") == 1e-7
